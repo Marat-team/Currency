@@ -13,11 +13,10 @@ struct Exchange: Decodable {
 }
 
 struct DataCurrency: Decodable {
-    let NumCode: String?
-    let CharCode: String?
-    let Nominal: Int?
-    let Name: String?
+    let CharCode: String
+    let Nominal: Int
     let Value: Double?
+    let Previous: Double?
 }
 
 enum URLS: String {

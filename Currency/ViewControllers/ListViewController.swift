@@ -18,13 +18,15 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         return tableView
     }()
     
-    private let dataExchanges = Valute.getList()
+    private var dataExchanges = Valute.getList()
+    private var dataFromAPI: [DataCurrency] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationController()
         setupDesign()
         setupConstraints()
+        fetchData(from: URLS.currencyapi.rawValue)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -37,12 +39,15 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.image.image = UIImage(named: dataExchanges[indexPath.row].flag)
         cell.labelCurrency.text = dataExchanges[indexPath.row].name
         cell.labelCharCode.text = dataExchanges[indexPath.row].charCode
+        cell.labelValue.text = string(dataExchanges[indexPath.row].value)
+        cell.labelPrevoius.text = checkCharacter(dataExchanges[indexPath.row].value,
+                                                 dataExchanges[indexPath.row].previous) +
+        string(subtract(dataExchanges[indexPath.row].value, dataExchanges[indexPath.row].previous))
+        cell.labelPrevoius.textColor = checkPrevious(dataExchanges[indexPath.row].value,
+                                                     dataExchanges[indexPath.row].previous)
+        cell.selectionStyle = .none
         
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     private func setupSubviews(subviews: UIView...) {
@@ -63,6 +68,46 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     private func setupDesign() {
         setupSubviews(subviews: listCurrency)
         listCurrency.rowHeight = 70
+    }
+    
+    private func fetchData(from url: String) {
+        NetworkManager.shared.fetchData(from: url) { date, exchange in
+            DispatchQueue.main.async {
+                self.dataFromAPI = exchange
+                self.setupDataCell()
+                self.listCurrency.reloadData()
+            }
+        }
+    }
+    
+    private func string(_ data: Double) -> String {
+        String(format: "%.2f", data)
+    }
+    
+    private func checkCharacter(_ value: Double,_ previous: Double) -> String {
+        value - previous > 0 ? "+ " : "- "
+    }
+    
+    private func checkPrevious(_ value: Double,_ previous: Double) -> UIColor {
+        value - previous > 0 ? .systemGreen : .systemRed
+    }
+    
+    private func subtract(_ value: Double,_ previous: Double) -> Double {
+        abs(value - previous)
+    }
+    
+    private func setupDataCell() {
+        let charCodeAPI = dataFromAPI.map{ $0.CharCode }
+        let iteraction = dataExchanges.count
+        
+        for indexFromList in 0..<iteraction {
+            guard let indexCharCode = charCodeAPI.firstIndex(of: dataExchanges[indexFromList].charCode) else { return }
+            guard let value = dataFromAPI[indexCharCode].Value else { return }
+            guard let previous = dataFromAPI[indexCharCode].Previous else { return }
+            
+            dataExchanges[indexFromList].value = value
+            dataExchanges[indexFromList].previous = previous
+        }
     }
 }
 
