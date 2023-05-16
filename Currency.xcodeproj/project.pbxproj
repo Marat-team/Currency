@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C33A85D32A1268740075C84A /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33A85D22A1268740075C84A /* OptionsViewController.swift */; };
+		C33A85D52A1269140075C84A /* CustomCellOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33A85D42A1269140075C84A /* CustomCellOptions.swift */; };
+		C33A85D72A135B690075C84A /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33A85D62A135B690075C84A /* StorageManager.swift */; };
 		C3E8E7E92A09285D00BCFF53 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E8E7E82A09285D00BCFF53 /* AppDelegate.swift */; };
 		C3E8E7EB2A09285D00BCFF53 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E8E7EA2A09285D00BCFF53 /* SceneDelegate.swift */; };
 		C3E8E7ED2A09285D00BCFF53 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E8E7EC2A09285D00BCFF53 /* ListViewController.swift */; };
@@ -19,6 +22,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C33A85D22A1268740075C84A /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
+		C33A85D42A1269140075C84A /* CustomCellOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCellOptions.swift; sourceTree = "<group>"; };
+		C33A85D62A135B690075C84A /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		C3E8E7E52A09285D00BCFF53 /* Currency.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Currency.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3E8E7E82A09285D00BCFF53 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C3E8E7EA2A09285D00BCFF53 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -85,6 +91,7 @@
 			children = (
 				C3E8E7FF2A092FAA00BCFF53 /* UITableViewCell */,
 				C3E8E7EC2A09285D00BCFF53 /* ListViewController.swift */,
+				C33A85D22A1268740075C84A /* OptionsViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -102,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				C3E8E8002A09303000BCFF53 /* CustomCell.swift */,
+				C33A85D42A1269140075C84A /* CustomCellOptions.swift */,
 			);
 			path = UITableViewCell;
 			sourceTree = "<group>";
@@ -120,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				C3E8E80A2A0962AD00BCFF53 /* NetworkManager.swift */,
+				C33A85D62A135B690075C84A /* StorageManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -195,12 +204,15 @@
 			files = (
 				C3E8E8062A09569C00BCFF53 /* ModelDataCurrency.swift in Sources */,
 				C3E8E7ED2A09285D00BCFF53 /* ListViewController.swift in Sources */,
+				C33A85D72A135B690075C84A /* StorageManager.swift in Sources */,
 				C3E8E8042A093EF600BCFF53 /* DataManager.swift in Sources */,
+				C33A85D32A1268740075C84A /* OptionsViewController.swift in Sources */,
 				C3E8E7E92A09285D00BCFF53 /* AppDelegate.swift in Sources */,
 				C3E8E80B2A0962AD00BCFF53 /* NetworkManager.swift in Sources */,
 				C3E8E8012A09303000BCFF53 /* CustomCell.swift in Sources */,
 				C3E8E7EB2A09285D00BCFF53 /* SceneDelegate.swift in Sources */,
 				C3E8E8082A0961FC00BCFF53 /* Exchange.swift in Sources */,
+				C33A85D52A1269140075C84A /* CustomCellOptions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

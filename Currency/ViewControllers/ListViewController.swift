@@ -7,47 +7,70 @@
 
 import UIKit
 
+protocol AddNewValuteDelegate {
+    func saveValute(valute: Valute)
+    func deleteValute(valute: Valute)
+}
+
 class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     private lazy var listCurrency: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.register(CustomCell.self, forCellReuseIdentifier: "cell")
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = .systemCyan
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
     
-    private var dataExchanges = Valute.getList()
+    private var dataExchanges: [Valute] = []
     private var dataFromAPI: [DataCurrency] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationController()
         setupDesign()
+        setupBarButton()
         setupConstraints()
         fetchData(from: URLS.currencyapi.rawValue)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        1
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
         dataExchanges.count
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        UIView()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomCell
         
-        cell.image.image = UIImage(named: dataExchanges[indexPath.row].flag)
-        cell.labelCurrency.text = dataExchanges[indexPath.row].name
-        cell.labelCharCode.text = dataExchanges[indexPath.row].charCode
-        cell.labelValue.text = string(dataExchanges[indexPath.row].value)
-        cell.labelPrevoius.text = checkCharacter(dataExchanges[indexPath.row].value,
-                                                 dataExchanges[indexPath.row].previous) +
-        string(subtract(dataExchanges[indexPath.row].value, dataExchanges[indexPath.row].previous))
-        cell.labelPrevoius.textColor = checkPrevious(dataExchanges[indexPath.row].value,
-                                                     dataExchanges[indexPath.row].previous)
+        cell.image.image = UIImage(named: dataExchanges[indexPath.section].flag)
+        cell.labelCurrency.text = dataExchanges[indexPath.section].name
+        cell.labelCharCode.text = dataExchanges[indexPath.section].charCode
+        cell.labelValue.text = string(dataExchanges[indexPath.section].value)
+        cell.labelPrevoius.text = checkCharacter(dataExchanges[indexPath.section].value,
+                                                 dataExchanges[indexPath.section].previous) +
+        string(subtract(dataExchanges[indexPath.section].value, dataExchanges[indexPath.section].previous))
+        cell.labelPrevoius.textColor = checkPrevious(dataExchanges[indexPath.section].value,
+                                                     dataExchanges[indexPath.section].previous)
         cell.selectionStyle = .none
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            deleteCheckmark(valute: dataExchanges[indexPath.section])
+            StorageManager.shared.deleteValute(valute: indexPath.section)
+            dataExchanges.remove(at: indexPath.section)
+            let indexSet = IndexSet(arrayLiteral: indexPath.section)
+            tableView.deleteSections(indexSet, with: .fade)
+        }
     }
     
     private func setupSubviews(subviews: UIView...) {
@@ -66,11 +89,13 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     private func setupDesign() {
+        listCurrency.rowHeight = 80
+        listCurrency.sectionHeaderHeight = 5
         setupSubviews(subviews: listCurrency)
-        listCurrency.rowHeight = 70
     }
     
     private func fetchData(from url: String) {
+        dataExchanges = StorageManager.shared.fetchValutes()
         NetworkManager.shared.fetchData(from: url) { date, exchange in
             DispatchQueue.main.async {
                 self.dataFromAPI = exchange
@@ -78,6 +103,23 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
                 self.listCurrency.reloadData()
             }
         }
+    }
+    
+    private func setupBarButton() {
+        let addBarButton = UIBarButtonItem(
+            barButtonSystemItem: .add,
+            target: self,
+            action: #selector(addValute))
+        
+        navigationItem.rightBarButtonItem = addBarButton
+    }
+    
+    @objc private func addValute() {
+        let optionsVC = OptionsViewController()
+        let navigationVC = UINavigationController(rootViewController: optionsVC)
+        optionsVC.delegate = self
+        navigationVC.modalPresentationStyle = .fullScreen
+        present(navigationVC, animated: true)
     }
     
     private func string(_ data: Double) -> String {
@@ -97,7 +139,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     private func setupDataCell() {
-        let charCodeAPI = dataFromAPI.map{ $0.CharCode }
+        let charCodeAPI = dataFromAPI.map { $0.CharCode }
         let iteraction = dataExchanges.count
         
         for indexFromList in 0..<iteraction {
@@ -108,6 +150,11 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             dataExchanges[indexFromList].value = value
             dataExchanges[indexFromList].previous = previous
         }
+    }
+    
+    private func deleteCheckmark(valute: Valute) {
+        let optionsVC = OptionsViewController()
+        optionsVC.deleteCheckmark(valute: valute)
     }
 }
 
@@ -122,3 +169,20 @@ extension ListViewController {
     }
 }
 
+extension ListViewController: AddNewValuteDelegate {
+    func saveValute(valute: Valute) {
+        dataExchanges.append(valute)
+        StorageManager.shared.saveValute(valute: valute)
+        setupDataCell()
+        listCurrency.reloadData()
+    }
+    
+    func deleteValute(valute: Valute) {
+        let charCodes = dataExchanges.map { $0.charCode }
+        guard let index = charCodes.firstIndex(of: valute.charCode) else { return }
+        dataExchanges.remove(at: index)
+        StorageManager.shared.deleteValute(valute: index)
+        setupDataCell()
+        listCurrency.reloadData()
+    }
+}
