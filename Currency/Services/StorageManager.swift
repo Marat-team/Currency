@@ -15,23 +15,27 @@ class StorageManager {
     private let selectKey = "select"
     
     func saveValute(valute: Valute) {
-        var valutes = fetchValutes()
-        valutes.append(valute)
-        guard let data = try? JSONEncoder().encode(valutes) else { return }
-        userDefaults.set(data, forKey: valuteKey)
+        fetchValutes { valutes in
+            var valutes = valutes
+            valutes.append(valute)
+            guard let data = try? JSONEncoder().encode(valutes) else { return }
+            self.userDefaults.set(data, forKey: self.valuteKey)
+        }
     }
     
     func deleteValute(valute: Int) {
-        var valutes = fetchValutes()
-        valutes.remove(at: valute)
-        guard let data = try? JSONEncoder().encode(valutes) else { return }
-        userDefaults.set(data, forKey: valuteKey)
+        fetchValutes { valutes in
+            var valutes = valutes
+            valutes.remove(at: valute)
+            guard let data = try? JSONEncoder().encode(valutes) else { return }
+            self.userDefaults.set(data, forKey: self.valuteKey)
+        }
     }
     
-    func fetchValutes() -> [Valute] {
-        guard let data = userDefaults.object(forKey: valuteKey) as? Data else { return [] }
-        guard let valutes = try? JSONDecoder().decode([Valute].self, from: data) else { return [] }
-        return valutes
+    func fetchValutes(complition: @escaping ([Valute]) -> Void) {
+        guard let data = userDefaults.object(forKey: valuteKey) as? Data else { return }
+        guard let valutes = try? JSONDecoder().decode([Valute].self, from: data) else { return }
+        complition(valutes)
     }
     
     func saveList(valutes: [Valute]) {

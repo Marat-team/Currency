@@ -7,42 +7,77 @@
 
 import UIKit
 
+protocol CellModelRepresentable {
+    var viewModel: CellIdentifible? { get set }
+}
+
 class CustomCell: UITableViewCell {
+    var viewModel: CellIdentifible? {
+        didSet {
+            configure()
+        }
+    }
+    
     let image = UIImageView()
     let labelCurrency = UILabel()
     let labelCharCode = UILabel()
     let labelValue = UILabel()
     let labelPrevoius = UILabel()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        configure()
-    }
+//    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+//        super.init(style: style, reuseIdentifier: reuseIdentifier)
+//        configure()
+//    }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+//    required init?(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
     
     private func configure() {
+        guard let viewModel = viewModel as? ListCellViewModel else { return }
+        
         image.layer.cornerRadius = 5
         image.layer.borderWidth = 1
         image.layer.borderColor = UIColor.black.cgColor
         image.clipsToBounds = true
+        image.image = UIImage(named: viewModel.image)
         
         labelCurrency.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         labelCurrency.textAlignment = .left
+        labelCurrency.text = viewModel.labelCurrency
         
         labelCharCode.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        labelCharCode.text = viewModel.labelCharCode
         
         labelValue.font = UIFont.systemFont(ofSize: 22, weight: .semibold)
         labelValue.textAlignment = .right
+        labelValue.text = string(viewModel.labelValue)
         
         labelPrevoius.font = UIFont.systemFont(ofSize: 22, weight: .semibold)
         labelPrevoius.textAlignment = .right
+        labelPrevoius.text = checkCharacter(viewModel.labelValue, viewModel.labelPrevoius) +
+        string(subtract(viewModel.labelValue, viewModel.labelPrevoius))
+        labelPrevoius.textColor = checkPrevious(viewModel.labelValue, viewModel.labelPrevoius)
         
         addSubviews(subviews: image, labelCurrency, labelCharCode, labelValue, labelPrevoius)
         
         setupConstraints()
+    }
+    
+    private func string(_ data: Double) -> String {
+        String(format: "%.2f", data)
+    }
+    
+    private func checkCharacter(_ value: Double,_ previous: Double) -> String {
+        value - previous > 0 ? "+ " : "- "
+    }
+    
+    private func checkPrevious(_ value: Double,_ previous: Double) -> UIColor {
+        value - previous > 0 ? .systemGreen : .systemRed
+    }
+    
+    private func subtract(_ value: Double,_ previous: Double) -> Double {
+        abs(value - previous)
     }
     
     private func addSubviews(subviews: UIView...) {

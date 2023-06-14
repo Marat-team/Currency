@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol ListDisplayLogic: AnyObject {
+    func displayList(viewModel: ViewModel)
+}
+
 protocol AddNewValuteDelegate {
     func saveValute(valute: Valute)
     func deleteValute(valute: Valute)
@@ -22,16 +26,22 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         return tableView
     }()
     
-    private var dataExchanges: [Valute] = []
-    private var dataFromAPI: [DataCurrency] = []
+    var interactor: ListBusinessLogic?
+    var router: (NSObjectProtocol & ListRoutingLogic & ListDataPassing)?
+    
+//    private var dataExchanges: [Valute] = []
+//    private var dataFromAPI: [DataCurrency] = []
+    private var rows: [ListCellViewModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        ListConfigurator.shared.configure(with: self)
         setupNavigationController()
         setupDesign()
         setupBarButton()
         setupConstraints()
-        fetchData(from: URLS.currencyapi.rawValue)
+        fetchData()
+//        fetchData(from: URLS.currencyapi.rawValue)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -39,14 +49,23 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        dataExchanges.count
+        rows.count
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         UIView()
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        rows[indexPath.row].height
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cellViewModel = rows[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellViewModel.identifier, for: indexPath) as! CustomCell
+        cell.viewModel = cellViewModel
+        return cell
+        /*
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomCell
         
         cell.image.image = UIImage(named: dataExchanges[indexPath.section].flag)
@@ -61,8 +80,9 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.selectionStyle = .none
         
         return cell
+         */
     }
-    
+    /*
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             deleteCheckmark(valute: dataExchanges[indexPath.section])
@@ -72,7 +92,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             tableView.deleteSections(indexSet, with: .fade)
         }
     }
-    
+    */
     private func setupSubviews(subviews: UIView...) {
         subviews.forEach { subview in
             view.addSubview(subview)
@@ -89,22 +109,23 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     private func setupDesign() {
-        listCurrency.rowHeight = 80
         listCurrency.sectionHeaderHeight = 5
         setupSubviews(subviews: listCurrency)
     }
-    
+    /*
     private func fetchData(from url: String) {
-        dataExchanges = StorageManager.shared.fetchValutes()
-        NetworkManager.shared.fetchData(from: url) { date, exchange in
-            DispatchQueue.main.async {
-                self.dataFromAPI = exchange
-                self.setupDataCell()
-                self.listCurrency.reloadData()
+        StorageManager.shared.fetchValutes(complition: { valutes in
+            self.dataExchanges = valutes
+            NetworkManager.shared.fetchData(from: url) { date, exchange in
+                DispatchQueue.main.async {
+                    self.dataFromAPI = exchange
+                    self.setupDataCell()
+                    self.listCurrency.reloadData()
+                }
             }
-        }
+        })
     }
-    
+    */
     private func setupBarButton() {
         let addBarButton = UIBarButtonItem(
             barButtonSystemItem: .add,
@@ -121,7 +142,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         navigationVC.modalPresentationStyle = .fullScreen
         present(navigationVC, animated: true)
     }
-    
+    /*
     private func string(_ data: Double) -> String {
         String(format: "%.2f", data)
     }
@@ -151,10 +172,14 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             dataExchanges[indexFromList].previous = previous
         }
     }
-    
+    */
     private func deleteCheckmark(valute: Valute) {
         let optionsVC = OptionsViewController()
         optionsVC.deleteCheckmark(valute: valute)
+    }
+    
+    private func fetchData() {
+        interactor?.fetchData()
     }
 }
 
@@ -171,18 +196,27 @@ extension ListViewController {
 
 extension ListViewController: AddNewValuteDelegate {
     func saveValute(valute: Valute) {
-        dataExchanges.append(valute)
-        StorageManager.shared.saveValute(valute: valute)
-        setupDataCell()
-        listCurrency.reloadData()
+//        dataExchanges.append(valute)
+//        StorageManager.shared.saveValute(valute: valute)
+//        setupDataCell()
+//        listCurrency.reloadData()
     }
     
     func deleteValute(valute: Valute) {
-        let charCodes = dataExchanges.map { $0.charCode }
-        guard let index = charCodes.firstIndex(of: valute.charCode) else { return }
-        dataExchanges.remove(at: index)
-        StorageManager.shared.deleteValute(valute: index)
-        setupDataCell()
-        listCurrency.reloadData()
+//        let charCodes = dataExchanges.map { $0.charCode }
+//        guard let index = charCodes.firstIndex(of: valute.charCode) else { return }
+//        dataExchanges.remove(at: index)
+//        StorageManager.shared.deleteValute(valute: index)
+//        setupDataCell()
+//        listCurrency.reloadData()
+    }
+}
+
+extension ListViewController: ListDisplayLogic {
+    func displayList(viewModel: ViewModel) {
+        rows = viewModel.rows
+        DispatchQueue.main.async {
+            self.listCurrency.reloadData()
+        }
     }
 }
