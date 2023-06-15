@@ -7,10 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C319996C2A3B0AD200DED9D7 /* ListInteractorWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C319996B2A3B0AD200DED9D7 /* ListInteractorWorker.swift */; };
+		C319996E2A3B24A100DED9D7 /* OptionsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C319996D2A3B24A100DED9D7 /* OptionsInteractor.swift */; };
+		C31999702A3B24AF00DED9D7 /* OptionsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C319996F2A3B24AF00DED9D7 /* OptionsPresenter.swift */; };
+		C31999722A3B24D000DED9D7 /* OptionsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31999712A3B24D000DED9D7 /* OptionsModels.swift */; };
+		C31999742A3B892200DED9D7 /* OptionsConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C31999732A3B892200DED9D7 /* OptionsConfigurator.swift */; };
 		C33A85D32A1268740075C84A /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33A85D22A1268740075C84A /* OptionsViewController.swift */; };
 		C33A85D52A1269140075C84A /* CustomCellOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33A85D42A1269140075C84A /* CustomCellOptions.swift */; };
 		C33A85D72A135B690075C84A /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33A85D62A135B690075C84A /* StorageManager.swift */; };
-		C358E0022A37970C0061074F /* ListInteractorWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C358E0012A37970C0061074F /* ListInteractorWorker.swift */; };
 		C358E0042A37A7CE0061074F /* ListPresenterWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C358E0032A37A7CE0061074F /* ListPresenterWorker.swift */; };
 		C3E1F37A2A336212004104B6 /* ListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E1F3792A336212004104B6 /* ListInteractor.swift */; };
 		C3E1F37C2A336243004104B6 /* ListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E1F37B2A336243004104B6 /* ListPresenter.swift */; };
@@ -29,10 +33,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C319996B2A3B0AD200DED9D7 /* ListInteractorWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListInteractorWorker.swift; sourceTree = "<group>"; };
+		C319996D2A3B24A100DED9D7 /* OptionsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsInteractor.swift; sourceTree = "<group>"; };
+		C319996F2A3B24AF00DED9D7 /* OptionsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsPresenter.swift; sourceTree = "<group>"; };
+		C31999712A3B24D000DED9D7 /* OptionsModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsModels.swift; sourceTree = "<group>"; };
+		C31999732A3B892200DED9D7 /* OptionsConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsConfigurator.swift; sourceTree = "<group>"; };
 		C33A85D22A1268740075C84A /* OptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsViewController.swift; sourceTree = "<group>"; };
 		C33A85D42A1269140075C84A /* CustomCellOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCellOptions.swift; sourceTree = "<group>"; };
 		C33A85D62A135B690075C84A /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
-		C358E0012A37970C0061074F /* ListInteractorWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListInteractorWorker.swift; sourceTree = "<group>"; };
 		C358E0032A37A7CE0061074F /* ListPresenterWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPresenterWorker.swift; sourceTree = "<group>"; };
 		C3E1F3792A336212004104B6 /* ListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListInteractor.swift; sourceTree = "<group>"; };
 		C3E1F37B2A336243004104B6 /* ListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPresenter.swift; sourceTree = "<group>"; };
@@ -67,6 +75,10 @@
 			isa = PBXGroup;
 			children = (
 				C33A85D22A1268740075C84A /* OptionsViewController.swift */,
+				C319996D2A3B24A100DED9D7 /* OptionsInteractor.swift */,
+				C319996F2A3B24AF00DED9D7 /* OptionsPresenter.swift */,
+				C31999712A3B24D000DED9D7 /* OptionsModels.swift */,
+				C31999732A3B892200DED9D7 /* OptionsConfigurator.swift */,
 			);
 			path = Options;
 			sourceTree = "<group>";
@@ -115,7 +127,7 @@
 			children = (
 				C3E8E7EC2A09285D00BCFF53 /* ListViewController.swift */,
 				C3E1F3792A336212004104B6 /* ListInteractor.swift */,
-				C358E0012A37970C0061074F /* ListInteractorWorker.swift */,
+				C319996B2A3B0AD200DED9D7 /* ListInteractorWorker.swift */,
 				C3E1F37B2A336243004104B6 /* ListPresenter.swift */,
 				C358E0032A37A7CE0061074F /* ListPresenterWorker.swift */,
 				C3E1F37D2A336263004104B6 /* ListRouter.swift */,
@@ -240,15 +252,19 @@
 				C3E8E8042A093EF600BCFF53 /* DataManager.swift in Sources */,
 				C33A85D32A1268740075C84A /* OptionsViewController.swift in Sources */,
 				C3E8E7E92A09285D00BCFF53 /* AppDelegate.swift in Sources */,
+				C31999742A3B892200DED9D7 /* OptionsConfigurator.swift in Sources */,
 				C3E1F37A2A336212004104B6 /* ListInteractor.swift in Sources */,
+				C319996C2A3B0AD200DED9D7 /* ListInteractorWorker.swift in Sources */,
 				C3E8E80B2A0962AD00BCFF53 /* NetworkManager.swift in Sources */,
 				C3E1F37E2A336263004104B6 /* ListRouter.swift in Sources */,
 				C3E8E8012A09303000BCFF53 /* CustomCell.swift in Sources */,
+				C319996E2A3B24A100DED9D7 /* OptionsInteractor.swift in Sources */,
+				C31999722A3B24D000DED9D7 /* OptionsModels.swift in Sources */,
 				C3E8E7EB2A09285D00BCFF53 /* SceneDelegate.swift in Sources */,
 				C3E1F37C2A336243004104B6 /* ListPresenter.swift in Sources */,
+				C31999702A3B24AF00DED9D7 /* OptionsPresenter.swift in Sources */,
 				C3E8E8082A0961FC00BCFF53 /* Exchange.swift in Sources */,
 				C33A85D52A1269140075C84A /* CustomCellOptions.swift in Sources */,
-				C358E0022A37970C0061074F /* ListInteractorWorker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

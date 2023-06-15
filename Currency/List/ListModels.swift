@@ -21,10 +21,6 @@ protocol CellIdentifible {
 enum List {
     // MARK: - Use cases
     enum ShowList {
-        struct Request {
-            
-        }
-        
         struct Response {
             let valutes: [Valute]
             let dataCurrency: [DataCurrency]

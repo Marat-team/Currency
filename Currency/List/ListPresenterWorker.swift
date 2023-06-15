@@ -7,7 +7,11 @@
 
 import Foundation
 
-class ListPresenterWorker {
+protocol PresenterWorkerInput {
+    func fetchCharCode(_ charCodeAPI: [String],_ iteraction: Int,_ valutes: [Valute],_ dataCurrency: [DataCurrency])
+}
+
+class ListPresenterWorker: PresenterWorkerInput {
     weak var presenter: PresenterWorkerOutput?
     var dataValutes: [Valute] = []
     

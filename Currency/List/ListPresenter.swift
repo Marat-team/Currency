@@ -15,7 +15,7 @@ protocol PresenterWorkerOutput: AnyObject {
 
 class ListPresenter: ListPresentationLogic {
     weak var viewController: ListDisplayLogic?
-    var worker: ListPresenterWorker?
+    var worker: PresenterWorkerInput?
     
     func fetchData(response: Response) {
         let charCodeAPI = response.dataCurrency.map { $0.CharCode }

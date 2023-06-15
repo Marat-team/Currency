@@ -19,22 +19,19 @@ protocol InteractorWorkerOutput: AnyObject {
 
 class ListInteractor: ListBusinessLogic, ListDataStore {
     var presenter: ListPresentationLogic?
-    var worker: ListInteractorWorker?
+    var worker: InteractorWorkerInput?
     var dataStorage: [Valute] = []
     
     func fetchData() {
-        worker = ListInteractorWorker()
         StorageManager.shared.fetchValutes { valutes in
             self.dataStorage = valutes
             self.worker?.fetchDataNetwork(valutes: self.dataStorage)
-            print("1. Interactor is activate")
         }
     }
 }
 
 extension ListInteractor: InteractorWorkerOutput {
     func acceptData(dataCurrency: [DataCurrency]) {
-        print("3. Worker of interactor output to interactor")
         let response = Response(valutes: dataStorage, dataCurrency: dataCurrency)
         presenter?.fetchData(response: response)
     }

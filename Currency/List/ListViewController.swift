@@ -29,8 +29,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     var interactor: ListBusinessLogic?
     var router: (NSObjectProtocol & ListRoutingLogic & ListDataPassing)?
     
-//    private var dataExchanges: [Valute] = []
-//    private var dataFromAPI: [DataCurrency] = []
     private var rows: [ListCellViewModel] = []
     
     override func viewDidLoad() {
@@ -41,7 +39,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         setupBarButton()
         setupConstraints()
         fetchData()
-//        fetchData(from: URLS.currencyapi.rawValue)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -61,26 +58,10 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellViewModel = rows[indexPath.row]
+        let cellViewModel = rows[indexPath.section]
         let cell = tableView.dequeueReusableCell(withIdentifier: cellViewModel.identifier, for: indexPath) as! CustomCell
         cell.viewModel = cellViewModel
         return cell
-        /*
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomCell
-        
-        cell.image.image = UIImage(named: dataExchanges[indexPath.section].flag)
-        cell.labelCurrency.text = dataExchanges[indexPath.section].name
-        cell.labelCharCode.text = dataExchanges[indexPath.section].charCode
-        cell.labelValue.text = string(dataExchanges[indexPath.section].value)
-        cell.labelPrevoius.text = checkCharacter(dataExchanges[indexPath.section].value,
-                                                 dataExchanges[indexPath.section].previous) +
-        string(subtract(dataExchanges[indexPath.section].value, dataExchanges[indexPath.section].previous))
-        cell.labelPrevoius.textColor = checkPrevious(dataExchanges[indexPath.section].value,
-                                                     dataExchanges[indexPath.section].previous)
-        cell.selectionStyle = .none
-        
-        return cell
-         */
     }
     /*
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -112,20 +93,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         listCurrency.sectionHeaderHeight = 5
         setupSubviews(subviews: listCurrency)
     }
-    /*
-    private func fetchData(from url: String) {
-        StorageManager.shared.fetchValutes(complition: { valutes in
-            self.dataExchanges = valutes
-            NetworkManager.shared.fetchData(from: url) { date, exchange in
-                DispatchQueue.main.async {
-                    self.dataFromAPI = exchange
-                    self.setupDataCell()
-                    self.listCurrency.reloadData()
-                }
-            }
-        })
-    }
-    */
+    
     private func setupBarButton() {
         let addBarButton = UIBarButtonItem(
             barButtonSystemItem: .add,
@@ -143,22 +111,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         present(navigationVC, animated: true)
     }
     /*
-    private func string(_ data: Double) -> String {
-        String(format: "%.2f", data)
-    }
-    
-    private func checkCharacter(_ value: Double,_ previous: Double) -> String {
-        value - previous > 0 ? "+ " : "- "
-    }
-    
-    private func checkPrevious(_ value: Double,_ previous: Double) -> UIColor {
-        value - previous > 0 ? .systemGreen : .systemRed
-    }
-    
-    private func subtract(_ value: Double,_ previous: Double) -> Double {
-        abs(value - previous)
-    }
-    
     private func setupDataCell() {
         let charCodeAPI = dataFromAPI.map { $0.CharCode }
         let iteraction = dataExchanges.count
@@ -172,12 +124,12 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             dataExchanges[indexFromList].previous = previous
         }
     }
-    */
+    
     private func deleteCheckmark(valute: Valute) {
         let optionsVC = OptionsViewController()
         optionsVC.deleteCheckmark(valute: valute)
     }
-    
+    */
     private func fetchData() {
         interactor?.fetchData()
     }

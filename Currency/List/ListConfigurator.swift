@@ -16,12 +16,16 @@ class ListConfigurator {
         let interactor = ListInteractor()
         let interactorWorker = ListInteractorWorker()
         let presenter = ListPresenter()
+        let presenterWorker = ListPresenterWorker()
         let router = ListRouter()
         viewController.interactor = interactor
         viewController.router = router
         interactor.presenter = presenter
+        interactor.worker = interactorWorker
         interactorWorker.interactor = interactor
         presenter.viewController = viewController
+        presenter.worker = presenterWorker
+        presenterWorker.presenter = presenter
         router.viewController = viewController
         router.dataStore = interactor
     }

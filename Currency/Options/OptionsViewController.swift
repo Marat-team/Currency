@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol OptionsDisplayLogic: AnyObject {
+    func displayList(viewModel: OptionsViewModel)
+}
+
 class OptionsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private lazy var listOptions: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
@@ -18,11 +22,13 @@ class OptionsViewController: UIViewController, UITableViewDataSource, UITableVie
     }()
     
     var delegate: AddNewValuteDelegate!
+    var interactor: OptionsBusinessLogic?
     
-    private var dataExchanges: [Valute] = []
+    private var rows: [OptionsCellViewModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        OptionsConfigurator.shared.configure(with: self)
         setupNavigationController()
         setupDesign()
         setupBarButton()
@@ -31,20 +37,21 @@ class OptionsViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        dataExchanges.count
+        rows.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        rows[indexPath.row].height
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomCellOptions
-        
-        cell.image.image = UIImage(named: dataExchanges[indexPath.row].flag)
-        cell.labelCurrency.text = dataExchanges[indexPath.row].name
-        cell.labelCharCode.text = dataExchanges[indexPath.row].charCode
-        cell.accessoryType = dataExchanges[indexPath.row].checkmark ? .checkmark : .none
-        
+        let cellViewModel = rows[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellViewModel.identifier, for: indexPath) as! CustomCellOptions
+        cell.accessoryType = rows[indexPath.row].checkmark ? .checkmark : .none
+        cell.viewModel = cellViewModel
         return cell
     }
-    
+    /*
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if dataExchanges[indexPath.row].checkmark {
             dataExchanges[indexPath.row].checkmark.toggle()
@@ -69,7 +76,7 @@ class OptionsViewController: UIViewController, UITableViewDataSource, UITableVie
         StorageManager.shared.saveList(valutes: dataExchanges)
         listOptions.reloadData()
     }
-    
+    */
     private func setupNavigationController() {
         title = "Options"
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -104,7 +111,7 @@ class OptionsViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     private func fetchList() {
-        dataExchanges = StorageManager.shared.fetchList()
+        interactor?.fetchData()
     }
 }
 
@@ -116,5 +123,11 @@ extension OptionsViewController {
             listOptions.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             listOptions.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+}
+
+extension OptionsViewController: OptionsDisplayLogic {
+    func displayList(viewModel: OptionsViewModel) {
+        rows = viewModel.rows
     }
 }

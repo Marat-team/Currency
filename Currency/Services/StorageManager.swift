@@ -43,9 +43,9 @@ class StorageManager {
         userDefaults.set(data, forKey: selectKey)
     }
     
-    func fetchList() -> [Valute] {
-        guard let data = userDefaults.object(forKey: selectKey) as? Data else { return Valute.getList() }
-        guard let valutes = try? JSONDecoder().decode([Valute].self, from: data) else { return Valute.getList() }
-        return valutes
+    func fetchList(complition: @escaping ([Valute]) -> Void) {
+        guard let data = userDefaults.object(forKey: selectKey) as? Data else { return }
+        guard let valutes = try? JSONDecoder().decode([Valute].self, from: data) else { return }
+        complition(valutes)
     }
 }

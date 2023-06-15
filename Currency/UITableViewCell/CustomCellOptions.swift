@@ -7,29 +7,35 @@
 
 import UIKit
 
-class CustomCellOptions: UITableViewCell {
+protocol OptionsCellRepresebtable {
+    var viewModel: OptionsCellIdentifible? { get set }
+}
+
+class CustomCellOptions: UITableViewCell, OptionsCellRepresebtable {
+    var viewModel: OptionsCellIdentifible? {
+        didSet {
+            configure()
+        }
+    }
+    
     let image = UIImageView()
     let labelCurrency = UILabel()
     let labelCharCode = UILabel()
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        configure()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     private func configure() {
+        guard let viewModel = viewModel as? OptionsCellViewModel else { return }
+        
         image.layer.cornerRadius = 5
         image.layer.borderWidth = 1
         image.layer.borderColor = UIColor.black.cgColor
         image.clipsToBounds = true
+        image.image = UIImage(named: viewModel.image)
         
         labelCurrency.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        labelCurrency.text = viewModel.labelCurrency
         
         labelCharCode.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        labelCharCode.text = viewModel.labelCharCode
         
         addSubviews(subviews: image, labelCurrency, labelCharCode)
         
