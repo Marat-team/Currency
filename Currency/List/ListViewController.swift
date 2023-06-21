@@ -63,17 +63,17 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.viewModel = cellViewModel
         return cell
     }
-    /*
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            deleteCheckmark(valute: dataExchanges[indexPath.section])
-            StorageManager.shared.deleteValute(valute: indexPath.section)
-            dataExchanges.remove(at: indexPath.section)
+            let request = Request(index: indexPath.section, rows: rows)
+            interactor?.deleteCheckmark(request: request)
+//            deleteCheckmark(valute: dataExchanges[indexPath.section])
             let indexSet = IndexSet(arrayLiteral: indexPath.section)
             tableView.deleteSections(indexSet, with: .fade)
         }
     }
-    */
+    
     private func setupSubviews(subviews: UIView...) {
         subviews.forEach { subview in
             view.addSubview(subview)
@@ -111,20 +111,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         present(navigationVC, animated: true)
     }
     /*
-    private func setupDataCell() {
-        let charCodeAPI = dataFromAPI.map { $0.CharCode }
-        let iteraction = dataExchanges.count
-        
-        for indexFromList in 0..<iteraction {
-            guard let indexCharCode = charCodeAPI.firstIndex(of: dataExchanges[indexFromList].charCode) else { return }
-            guard let value = dataFromAPI[indexCharCode].Value else { return }
-            guard let previous = dataFromAPI[indexCharCode].Previous else { return }
-            
-            dataExchanges[indexFromList].value = value
-            dataExchanges[indexFromList].previous = previous
-        }
-    }
-    
     private func deleteCheckmark(valute: Valute) {
         let optionsVC = OptionsViewController()
         optionsVC.deleteCheckmark(valute: valute)

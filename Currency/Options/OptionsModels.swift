@@ -8,6 +8,7 @@
 import Foundation
 
 typealias OptionsCellViewModel = Options.ShowList.ViewModel.OptionsCellViewModel
+typealias OptionsRequest = Options.ShowList.Request
 typealias OptionsResponse = Options.ShowList.Response
 typealias OptionsViewModel = Options.ShowList.ViewModel
 
@@ -20,7 +21,8 @@ enum Options {
     // MARK: - Use cases
     enum ShowList {
         struct Request {
-            
+            let indexPath: Int
+            let rows: [OptionsCellViewModel]
         }
         
         struct Response {

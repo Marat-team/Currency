@@ -7,6 +7,7 @@
 
 protocol ListPresentationLogic {
     func fetchData(response: Response)
+    func deleteCheckmark(response: ResponseCheckmark)
 }
 
 protocol PresenterWorkerOutput: AnyObject {
@@ -23,6 +24,11 @@ class ListPresenter: ListPresentationLogic {
         let valutes = response.valutes
         let dataCurrency = response.dataCurrency
         worker?.fetchCharCode(charCodeAPI, iteraction, valutes, dataCurrency)
+    }
+    
+    func deleteCheckmark(response: ResponseCheckmark) {
+        let viewModel = ViewModel(rows: response.rows)
+        viewController?.displayList(viewModel: viewModel)
     }
 }
 

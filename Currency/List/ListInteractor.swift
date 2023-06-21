@@ -7,6 +7,7 @@
 
 protocol ListBusinessLogic {
     func fetchData()
+    func deleteCheckmark(request: Request)
 }
 
 protocol ListDataStore {
@@ -27,6 +28,14 @@ class ListInteractor: ListBusinessLogic, ListDataStore {
             self.dataStorage = valutes
             self.worker?.fetchDataNetwork(valutes: self.dataStorage)
         }
+    }
+    
+    func deleteCheckmark(request: Request) {
+        StorageManager.shared.deleteValute(valute: request.index)
+        var rows = request.rows
+        rows.remove(at: request.index)
+        let response = ResponseCheckmark(rows: rows)
+        presenter?.deleteCheckmark(response: response)
     }
 }
 

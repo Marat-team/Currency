@@ -51,23 +51,23 @@ class OptionsViewController: UIViewController, UITableViewDataSource, UITableVie
         cell.viewModel = cellViewModel
         return cell
     }
-    /*
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if dataExchanges[indexPath.row].checkmark {
-            dataExchanges[indexPath.row].checkmark.toggle()
-            StorageManager.shared.saveList(valutes: dataExchanges)
-            delegate.deleteValute(valute: dataExchanges[indexPath.row])
+        if rows[indexPath.row].checkmark {
+            let request = OptionsRequest(indexPath: indexPath.row, rows: rows)
+            interactor?.checkmarkData(request: request)
+//            delegate.deleteValute(valute: dataExchanges[indexPath.row])
             tableView.cellForRow(at: indexPath)?.accessoryType = .none
         } else {
-            dataExchanges[indexPath.row].checkmark.toggle()
-            StorageManager.shared.saveList(valutes: dataExchanges)
-            delegate.saveValute(valute: dataExchanges[indexPath.row])
+            let request = OptionsRequest(indexPath: indexPath.row, rows: rows)
+            interactor?.checkmarkData(request: request)
+//            delegate.saveValute(valute: dataExchanges[indexPath.row])
             tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
+    /*
     func deleteCheckmark(valute: Valute) {
         fetchList()
         let charCodes = dataExchanges.map { $0.charCode }
@@ -87,7 +87,6 @@ class OptionsViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     private func setupDesign() {
-        listOptions.rowHeight = 50
         setupSubviews(subviews: listOptions)
     }
     

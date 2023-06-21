@@ -9,8 +9,8 @@ struct Valute: Codable {
     let flag: String
     let charCode: String
     let name: String
-    var value: Double
-    var previous: Double
+    var value: Double?
+    var previous: Double?
     var checkmark: Bool
 }
 

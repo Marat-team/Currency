@@ -8,7 +8,9 @@
 import Foundation
 
 typealias ListCellViewModel = List.ShowList.ViewModel.ListCellViewModel
+typealias Request = List.ShowList.Request
 typealias Response = List.ShowList.Response
+typealias ResponseCheckmark = List.ShowList.Response.ResponseCheckmark
 typealias ViewModel = List.ShowList.ViewModel
 
 protocol CellIdentifible {
@@ -21,9 +23,18 @@ protocol CellIdentifible {
 enum List {
     // MARK: - Use cases
     enum ShowList {
+        struct Request {
+            let index: Int
+            let rows: [ListCellViewModel]
+        }
+        
         struct Response {
             let valutes: [Valute]
             let dataCurrency: [DataCurrency]
+            
+            struct ResponseCheckmark {
+                let rows: [ListCellViewModel]
+            }
         }
         
         struct ViewModel {
@@ -51,8 +62,8 @@ enum List {
                     self.image = valute.flag
                     self.labelCurrency = valute.name
                     self.labelCharCode = valute.charCode
-                    self.labelValue = valute.value
-                    self.labelPrevoius = valute.previous
+                    self.labelValue = valute.value ?? 0
+                    self.labelPrevoius = valute.previous ?? 0
                 }
             }
             

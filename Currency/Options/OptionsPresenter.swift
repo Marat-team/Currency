@@ -7,6 +7,7 @@
 
 protocol OptionsPresentationLogic {
     func presentList(response: OptionsResponse)
+    func checkmarkData(response: OptionsResponse)
 }
 
 class OptionsPresenter: OptionsPresentationLogic {
@@ -17,5 +18,9 @@ class OptionsPresenter: OptionsPresentationLogic {
         response.valutes.forEach { rows.append(OptionsCellViewModel(valute: $0)) }
         let viewModel = OptionsViewModel(rows: rows)
         viewController?.displayList(viewModel: viewModel)
+    }
+    
+    func checkmarkData(response: OptionsResponse) {
+        StorageManager.shared.saveList(valutes: response.valutes)
     }
 }
