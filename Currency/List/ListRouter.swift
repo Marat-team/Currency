@@ -8,7 +8,7 @@
 import UIKit
 
 @objc protocol ListRoutingLogic {
-//    func routeToOptions(segue: UIStoryboardSegue?)
+    func routeToOptions()
 }
 
 protocol ListDataPassing {
@@ -19,7 +19,11 @@ class ListRouter: NSObject, ListRoutingLogic, ListDataPassing {
     weak var viewController: ListViewController?
     var dataStore: ListDataStore?
     
-//    func routeToOptions(segue: UIStoryboardSegue?) {
-//        <#code#>
-//    }
+    func routeToOptions() {
+        
+    }
+    
+    func passDataToOptions() {
+        
+    }
 }

@@ -23,6 +23,7 @@ class OptionsViewController: UIViewController, UITableViewDataSource, UITableVie
     
     var delegate: AddNewValuteDelegate!
     var interactor: OptionsBusinessLogic?
+    var router: (NSObjectProtocol & OptionsRoutingLogic & OptionsDataPassing)?
     
     private var rows: [OptionsCellViewModel] = []
     

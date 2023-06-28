@@ -16,6 +16,7 @@ protocol ListDataStore {
 
 protocol InteractorWorkerOutput: AnyObject {
     func acceptData(dataCurrency: [DataCurrency])
+    func fetchCharCode(rows: [ListCellViewModel], row: ListCellViewModel, charCodes: [String], list: [Valute])
 }
 
 class ListInteractor: ListBusinessLogic, ListDataStore {
@@ -32,10 +33,10 @@ class ListInteractor: ListBusinessLogic, ListDataStore {
     
     func deleteCheckmark(request: Request) {
         StorageManager.shared.deleteValute(valute: request.index)
+        let row = request.rows[request.index]
         var rows = request.rows
         rows.remove(at: request.index)
-        let response = ResponseCheckmark(rows: rows)
-        presenter?.deleteCheckmark(response: response)
+        worker?.deleteCheckmark(rows: rows, row: row)
     }
 }
 
@@ -43,5 +44,13 @@ extension ListInteractor: InteractorWorkerOutput {
     func acceptData(dataCurrency: [DataCurrency]) {
         let response = Response(valutes: dataStorage, dataCurrency: dataCurrency)
         presenter?.fetchData(response: response)
+    }
+    
+    func fetchCharCode(rows: [ListCellViewModel], row: ListCellViewModel, charCodes: [String], list: [Valute]) {
+        guard let indexCharCode = charCodes.firstIndex(of: row.labelCharCode) else { return }
+        dataStorage = list
+        dataStorage[indexCharCode].checkmark.toggle()
+        let response = ResponseCheckmark(rows: rows, valutes: dataStorage)
+        presenter?.saveList(response: response)
     }
 }

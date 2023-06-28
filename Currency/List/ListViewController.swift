@@ -68,7 +68,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         if editingStyle == .delete {
             let request = Request(index: indexPath.section, rows: rows)
             interactor?.deleteCheckmark(request: request)
-//            deleteCheckmark(valute: dataExchanges[indexPath.section])
             let indexSet = IndexSet(arrayLiteral: indexPath.section)
             tableView.deleteSections(indexSet, with: .fade)
         }
@@ -110,12 +109,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         navigationVC.modalPresentationStyle = .fullScreen
         present(navigationVC, animated: true)
     }
-    /*
-    private func deleteCheckmark(valute: Valute) {
-        let optionsVC = OptionsViewController()
-        optionsVC.deleteCheckmark(valute: valute)
-    }
-    */
+    
     private func fetchData() {
         interactor?.fetchData()
     }

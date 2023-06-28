@@ -9,6 +9,7 @@ import Foundation
 
 protocol PresenterWorkerInput {
     func fetchCharCode(_ charCodeAPI: [String],_ iteraction: Int,_ valutes: [Valute],_ dataCurrency: [DataCurrency])
+    func saveList(valutes: [Valute])
 }
 
 class ListPresenterWorker: PresenterWorkerInput {
@@ -36,5 +37,9 @@ class ListPresenterWorker: PresenterWorkerInput {
     
     func sendData(valutes: [Valute]) {
         presenter?.listPresent(valutes: valutes)
+    }
+    
+    func saveList(valutes: [Valute]) {
+        StorageManager.shared.saveList(valutes: valutes)
     }
 }

@@ -9,6 +9,7 @@ import Foundation
 
 protocol InteractorWorkerInput {
     func fetchDataNetwork(valutes: [Valute])
+    func deleteCheckmark(rows: [ListCellViewModel], row: ListCellViewModel)
 }
 
 class ListInteractorWorker: InteractorWorkerInput {
@@ -20,6 +21,13 @@ class ListInteractorWorker: InteractorWorkerInput {
         NetworkManager.shared.fetchData(from: url) { exchange, dataCurrency in
             self.dataNetwork = dataCurrency
             self.interactor?.acceptData(dataCurrency: self.dataNetwork)
+        }
+    }
+    
+    func deleteCheckmark(rows: [ListCellViewModel], row: ListCellViewModel) {
+        StorageManager.shared.fetchList { list in
+            let charCodeList = list.map { $0.charCode }
+            self.interactor?.fetchCharCode(rows: rows, row: row, charCodes: charCodeList, list: list)
         }
     }
 }

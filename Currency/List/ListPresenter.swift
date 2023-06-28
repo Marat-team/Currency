@@ -8,6 +8,7 @@
 protocol ListPresentationLogic {
     func fetchData(response: Response)
     func deleteCheckmark(response: ResponseCheckmark)
+    func saveList(response: ResponseCheckmark)
 }
 
 protocol PresenterWorkerOutput: AnyObject {
@@ -27,6 +28,12 @@ class ListPresenter: ListPresentationLogic {
     }
     
     func deleteCheckmark(response: ResponseCheckmark) {
+        let viewModel = ViewModel(rows: response.rows)
+        viewController?.displayList(viewModel: viewModel)
+    }
+    
+    func saveList(response: ResponseCheckmark) {
+        worker?.saveList(valutes: response.valutes)
         let viewModel = ViewModel(rows: response.rows)
         viewController?.displayList(viewModel: viewModel)
     }

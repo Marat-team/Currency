@@ -34,6 +34,7 @@ enum List {
             
             struct ResponseCheckmark {
                 let rows: [ListCellViewModel]
+                let valutes: [Valute]
             }
         }
         

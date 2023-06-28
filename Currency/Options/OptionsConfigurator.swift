@@ -15,8 +15,12 @@ class OptionsConfigurator {
     func configure(with viewController: OptionsViewController) {
         let interactor = OptionsInteractor()
         let presenter = OptionsPresenter()
+        let router = OptionsRouter()
         viewController.interactor = interactor
+        viewController.router = router
         interactor.presenter = presenter
         presenter.viewController = viewController
+        router.viewController = viewController
+        router.dataStore = interactor
     }
 }
