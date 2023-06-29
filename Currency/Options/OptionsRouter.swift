@@ -7,8 +7,8 @@
 
 import Foundation
 
-@objc protocol OptionsRoutingLogic {
-    
+protocol OptionsRoutingLogic {
+    func deleteCheckmark(valute: Valute)
 }
 
 protocol OptionsDataPassing {
@@ -18,4 +18,8 @@ protocol OptionsDataPassing {
 class OptionsRouter: NSObject, OptionsRoutingLogic, OptionsDataPassing {
     weak var viewController: OptionsViewController?
     var dataStore: OptionsDataStore?
+    
+    func deleteCheckmark(valute: Valute) {
+        <#code#>
+    }
 }

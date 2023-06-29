@@ -105,7 +105,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     @objc private func addValute() {
         let optionsVC = OptionsViewController()
         let navigationVC = UINavigationController(rootViewController: optionsVC)
-        optionsVC.delegate = self
         navigationVC.modalPresentationStyle = .fullScreen
         present(navigationVC, animated: true)
     }

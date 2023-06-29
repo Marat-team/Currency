@@ -21,7 +21,6 @@ class OptionsViewController: UIViewController, UITableViewDataSource, UITableVie
         return tableView
     }()
     
-    var delegate: AddNewValuteDelegate!
     var interactor: OptionsBusinessLogic?
     var router: (NSObjectProtocol & OptionsRoutingLogic & OptionsDataPassing)?
     
@@ -56,28 +55,17 @@ class OptionsViewController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if rows[indexPath.row].checkmark {
             let request = OptionsRequest(indexPath: indexPath.row, rows: rows)
-            interactor?.checkmarkData(request: request)
-//            delegate.deleteValute(valute: dataExchanges[indexPath.row])
+            interactor?.deleteCheckmark(request: request)
             tableView.cellForRow(at: indexPath)?.accessoryType = .none
         } else {
             let request = OptionsRequest(indexPath: indexPath.row, rows: rows)
-            interactor?.checkmarkData(request: request)
-//            delegate.saveValute(valute: dataExchanges[indexPath.row])
+            interactor?.deleteCheckmark(request: request)
             tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
         }
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    /*
-    func deleteCheckmark(valute: Valute) {
-        fetchList()
-        let charCodes = dataExchanges.map { $0.charCode }
-        guard let index = charCodes.firstIndex(of: valute.charCode) else { return }
-        dataExchanges[index].checkmark.toggle()
-        StorageManager.shared.saveList(valutes: dataExchanges)
-        listOptions.reloadData()
-    }
-    */
+    
     private func setupNavigationController() {
         title = "Options"
         navigationController?.navigationBar.prefersLargeTitles = true

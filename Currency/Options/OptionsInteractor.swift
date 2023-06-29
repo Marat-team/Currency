@@ -7,7 +7,7 @@
 
 protocol OptionsBusinessLogic {
     func fetchData()
-    func checkmarkData(request: OptionsRequest)
+    func deleteCheckmark(request: OptionsRequest)
 }
 
 protocol OptionsDataStore {
@@ -26,16 +26,31 @@ class OptionsInteractor: OptionsBusinessLogic, OptionsDataStore {
         }
     }
     
-    func checkmarkData(request: OptionsRequest) {
+    func deleteCheckmark(request: OptionsRequest) {
+        let valutes = checkmarkValutes(rows: request.rows)
+        let checkValutes = checkmarkToggle(index: request.indexPath, valutes: valutes)
+        responseValutes(valutes: checkValutes)
+    }
+    
+    func checkmarkValutes(rows: [OptionsCellViewModel]) -> [Valute] {
         var valutes: [Valute] = []
-        request.rows.forEach { row in
+        rows.forEach { row in
             let valute = Valute(flag: row.image,
                                 charCode: row.labelCharCode,
                                 name: row.labelCurrency,
                                 checkmark: row.checkmark)
             valutes.append(valute)
         }
-        valutes[request.indexPath].checkmark.toggle()
+        return valutes
+    }
+    
+    func checkmarkToggle(index: Int, valutes: [Valute]) -> [Valute] {
+        var valutes = valutes
+        valutes[index].checkmark.toggle()
+        return valutes
+    }
+    
+    func responseValutes(valutes: [Valute]) {
         let response = OptionsResponse(valutes: valutes)
         presenter?.checkmarkData(response: response)
     }
